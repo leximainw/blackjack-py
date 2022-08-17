@@ -5,7 +5,8 @@ class Game:
     def __init__(self, *players):
         self.dealer = Player()
         self.curr_player = 0
-        self.players = players
+        self.players = list(players)
+        self.winner = None
         self.deck = Deck.default()
         self.deck.shuffle()
         for player in players:
@@ -21,7 +22,7 @@ class Game:
         return drawn
 
     def play(self):
-        while True:
+        while len(self.players) and self.winner is None:
             self.play_next()
             # TODO: implement game-over condition
 
@@ -30,27 +31,46 @@ class Game:
             self.play_dealer()
             self.curr_player = 0
         else:
-            self.play_player(self.players[self.curr_player])
+            player = self.players[self.curr_player]
+            self.play_player(player)
+            score = Game.score_hand(player.hand)
+            if score > 21:   # bust
+                self.players.remove(player)
+            elif score == 21:   # blackjack!
+                print(f"Player {self.curr_player + 1} wins!")
+                self.winner = player
             self.curr_player += 1
 
     def play_dealer(self):
         if Game.score_hand(self.dealer.hand, True) < 17:
             self.deal(self.dealer)
+            print("The dealer draws a card.")
+        else:
+            print("The dealer stands pat.")
+        print()
 
     def play_player(self, player):
         print(f"Player {self.curr_player + 1}, your hand is:")
         for card in player.hand.cards:
             print(f"   {card}")
+        print(f"You currently have {Game.score_hand(player.hand)} points.")
         while True:
             choice = input("Hit or stand pat? ").lower()
             if choice == "hit" or choice == "hit me":
                 print(f"You drew the {self.deal(player)[0]}!")
-                print(f"You have {Game.score_hand(player.hand)} points.")
+                score = Game.score_hand(player.hand)
+                if score < 21:
+                    print(f"You have {score} points.")
+                elif score == 21:
+                    print("You have exactly 21 points!")
+                else:
+                    print(f"You have {score} points and went bust.")
                 break
             elif choice == "stand" or choice == "pat" or choice == "stand pat":
                 break
             else:
                 print("I don't know what that means!")
+        print()
 
     def score_hand(hand, as_dealer=False):
         score = 0

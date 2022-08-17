@@ -56,10 +56,10 @@ class Game:
         score = 0
         num_aces = 0
         for card in hand.cards:
-            if card.is_face():
+            if card.is_face:
                 score += 10
             elif card.value != "Ace":
-                score += card.get_value()
+                score += card.point_value
             else:
                 score += 11
                 num_aces += 1

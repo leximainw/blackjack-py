@@ -13,8 +13,17 @@ class Game:
         self.deal(self.dealer, 2)
 
     def deal(self, player, cards=1):
+        drawn = []
         for _ in range(cards):
-            player.add_card(self.deck.draw())
+            card = self.deck.draw()
+            drawn.append(card)
+            player.add_card(card)
+        return drawn
+
+    def play(self):
+        while True:
+            self.play_next()
+            # TODO: implement game-over condition
 
     def play_next(self):
         if self.curr_player == len(self.players):
@@ -28,13 +37,25 @@ class Game:
         if Game.score_hand(self.dealer.hand, True) < 17:
             self.deal(self.dealer)
 
-    def play_player(self):
-        raise NotImplementedError()
+    def play_player(self, player):
+        print(f"Player {self.curr_player + 1}, your hand is:")
+        for card in player.hand.cards:
+            print(f"   {card}")
+        while True:
+            choice = input("Hit or stand pat? ").lower()
+            if choice == "hit" or choice == "hit me":
+                print(f"You drew the {self.deal(player)[0]}!")
+                print(f"You have {Game.score_hand(player.hand)} points.")
+                break
+            elif choice == "stand" or choice == "pat" or choice == "stand pat":
+                break
+            else:
+                print("I don't know what that means!")
 
     def score_hand(hand, as_dealer=False):
         score = 0
         num_aces = 0
-        for card in hand:
+        for card in hand.cards:
             if card.is_face():
                 score += 10
             elif card.value != "Ace":
@@ -62,3 +83,4 @@ class Player:
 
 if __name__ == "__main__":
     game = Game(Player())
+    game.play()

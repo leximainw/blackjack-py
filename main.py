@@ -11,7 +11,8 @@ class Game:
         self.deck.shuffle()
         for player in players:
             self.deal(player, 2)
-        self.deal(self.dealer, 2)
+        print("The dealer draws two cards.")
+        print(f"The face-up card is the {self.deal(self.dealer, 2)[0]}.")
 
     def deal(self, player, cards=1):
         drawn = []

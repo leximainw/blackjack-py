@@ -1,3 +1,6 @@
+from random import shuffle
+
+
 SUITS = ["Spades", "Clubs", "Diamonds", "Hearts"]
 VALUES = [
     "Ace", "Two", "Three", "Four", "Five", "Six", "Seven",
@@ -28,3 +31,6 @@ class Deck:
             for value in VALUES:
                 deck.cards.append(Card(suit, value))
         return deck
+
+    def shuffle(self):
+        shuffle(self.cards)

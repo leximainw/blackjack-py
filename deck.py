@@ -32,6 +32,9 @@ class Deck:
                 deck.cards.append(Card(suit, value))
         return deck
 
+    def add(self, card):
+        self.cards.append(card)
+
     def draw(self):
         if len(self.cards):
             return self.cards.pop()

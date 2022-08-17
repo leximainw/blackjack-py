@@ -1,4 +1,4 @@
-FACES = ["Spades", "Clubs", "Diamonds", "Hearts"]
+SUITS = ["Spades", "Clubs", "Diamonds", "Hearts"]
 VALUES = [
     "Ace", "Two", "Three", "Four", "Five", "Six", "Seven",
     "Eight", "Nine", "Ten", "Jack", "Queen", "King"
@@ -6,12 +6,12 @@ VALUES = [
 
 
 class Card:
-    def __init__(self, face, value):
-        if face not in FACES:
-            raise (ValueError if type(face) is str else TypeError)()
+    def __init__(self, suit, value):
+        if suit not in SUITS:
+            raise (ValueError if type(suit) is str else TypeError)()
         if value not in VALUES:
             raise (ValueError if type(value) is str else TypeError)()
-        self.face = face
+        self.suit = suit
         self.value = value
 
 
@@ -21,7 +21,7 @@ class Deck:
 
     def default():
         deck = Deck()
-        for face in FACES:
+        for suit in SUITS:
             for value in VALUES:
-                deck.cards.append(Card(face, value))
+                deck.cards.append(Card(suit, value))
         return deck

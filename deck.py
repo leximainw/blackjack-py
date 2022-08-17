@@ -32,5 +32,11 @@ class Deck:
                 deck.cards.append(Card(suit, value))
         return deck
 
+    def draw(self):
+        if len(self.cards):
+            return self.cards.pop()
+        else:
+            return None
+
     def shuffle(self):
         shuffle(self.cards)
